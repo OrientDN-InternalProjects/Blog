@@ -6,119 +6,58 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using blog_api_y_nguyen.Models;
+using blog_api_y_nguyen.Repository;
 
 namespace blog_api_y_nguyen.Controllers
 {
     [Route("api/authors")]
     [ApiController]
-    public class AuthorsController : ControllerBase
+    public class AuthorsController : Controller
     {
+        private IAuthorRepository _authorRepository;
         private readonly BlogContext _context;
-
         public AuthorsController(BlogContext context)
         {
             _context = context;
+            _authorRepository = new AuthorRepository(_context);
         }
 
         // GET: api/Authors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        public IEnumerable<Author> GetAllAuthors()
         {
-          if (_context.Authors == null)
-          {
-              return NotFound();
-          }
-            return await _context.Authors.ToListAsync();
+            return _authorRepository.GetAllAuthors();
         }
 
         // GET: api/Authors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(int id)
+        public Author GetAuthor(int id)
         {
-          if (_context.Authors == null)
-          {
-              return NotFound();
-          }
-            var author = await _context.Authors.FindAsync(id);
-
-            if (author == null)
-            {
-                return NotFound();
-            }
-
-            return author;
+            return _authorRepository.GetAuthor(id);
         }
 
         // PUT: api/Authors/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAuthor(int id, Author author)
+        [HttpPut]
+        public void PutAuthor(Author Author)
         {
-            if (id != author.AuthorId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(author).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AuthorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            _authorRepository.PutAuthor(Author);
+            _authorRepository.Save();
         }
 
         // POST: api/Authors
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Author>> PostAuthor(Author author)
+        public void PostBlog(Author author)
         {
-          if (_context.Authors == null)
-          {
-              return Problem("Entity set 'BlogContext.Authors'  is null.");
-          }
-            _context.Authors.Add(author);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetAuthor), new { id = author.AuthorId }, author);
-
-            
+            _authorRepository.PostAuthor(author);
+            _authorRepository.Save();
         }
 
         // DELETE: api/Authors/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAuthor(int id)
+        public void DeleteAuthor(Author author)
         {
-            if (_context.Authors == null)
-            {
-                return NotFound();
-            }
-            var author = await _context.Authors.FindAsync(id);
-            if (author == null)
-            {
-                return NotFound();
-            }
-
-            _context.Authors.Remove(author);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool AuthorExists(int id)
-        {
-            return (_context.Authors?.Any(e => e.AuthorId == id)).GetValueOrDefault();
+            _authorRepository.DeleteAuthor(author);
+            _authorRepository.Save();
         }
     }
 }

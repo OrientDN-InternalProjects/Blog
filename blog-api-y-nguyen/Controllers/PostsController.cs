@@ -6,118 +6,58 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using blog_api_y_nguyen.Models;
+using blog_api_y_nguyen.Repository;
 
 namespace blog_api_y_nguyen.Controllers
 {
     [Route("api/posts")]
     [ApiController]
-    public class PostsController : ControllerBase
+    public class PostsController : Controller
     {
+        private IPostRepository _postRepository;
         private readonly BlogContext _context;
-
-        public PostsController(BlogContext context)
+        public PostsController (BlogContext context)
         {
             _context = context;
+            _postRepository = new PostRepository(_context);
         }
 
         // GET: api/Posts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Post>>> GetPosts()
+        public IEnumerable<Post> GetAllPosts()
         {
-          if (_context.Posts == null)
-          {
-              return NotFound();
-          }
-            return await _context.Posts.ToListAsync();
+            return _postRepository.GetAllPosts();
         }
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Post>> GetPost(int id)
+        public Post GetPost(int id)
         {
-          if (_context.Posts == null)
-          {
-              return NotFound();
-          }
-            var post = await _context.Posts.FindAsync(id);
-
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            return post;
+            return _postRepository.GetPost(id);
         }
 
         // PUT: api/Posts/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPost(int id, Post post)
+        [HttpPut]
+        public void PutPost(Post post)
         {
-            if (id != post.PostId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(post).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PostExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            _postRepository.PutPost(post);
+            _postRepository.Save();
         }
 
         // POST: api/Posts
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Post>> PostPost(Post post)
+        public void PostPost(Post post)
         {
-          if (_context.Posts == null)
-          {
-              return Problem("Entity set 'BlogContext.Posts'  is null.");
-          }
-            _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetPost), new { id = post.PostId }, post);
+            _postRepository.PostPost(post);
+            _postRepository.Save();
         }
 
         // DELETE: api/Posts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id)
+        public void DeletePost(Post post)
         {
-            if (_context.Posts == null)
-            {
-                return NotFound();
-            }
-            var post = await _context.Posts.FindAsync(id);
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            _context.Posts.Remove(post);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PostExists(int id)
-        {
-            return (_context.Posts?.Any(e => e.PostId == id)).GetValueOrDefault();
+            _postRepository.DeletePost(post);
+            _postRepository.Save();
         }
     }
 }
