@@ -262,3 +262,5 @@ C:\Users\y.nguyen\source\repos\blog-api-y-nguyen\blog-api-y-nguyen\obj\Debug\net
 C:\Users\y.nguyen\source\repos\blog-api-y-nguyen\blog-api-y-nguyen\obj\Debug\net6.0\blog-api-y-nguyen.pdb
 C:\Users\y.nguyen\source\repos\blog-api-y-nguyen\blog-api-y-nguyen\obj\Debug\net6.0\blog-api-y-nguyen.genruntimeconfig.cache
 C:\Users\y.nguyen\source\repos\blog-api-y-nguyen\blog-api-y-nguyen\obj\Debug\net6.0\ref\blog-api-y-nguyen.dll
+C:\Users\y.nguyen\source\repos\blog-api-y-nguyen\blog-api-y-nguyen\bin\Debug\net6.0\blog-api-y-nguyen.xml
+C:\Users\y.nguyen\source\repos\blog-api-y-nguyen\blog-api-y-nguyen\obj\Debug\net6.0\blog-api-y-nguyen.xml
