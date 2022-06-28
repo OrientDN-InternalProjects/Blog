@@ -28,40 +28,87 @@ namespace blog_api_y_nguyen.Controllers
 
         // GET: api/Blogs
         [HttpGet]
-        public IEnumerable<Blog> GetAllBlogs()
+        public ActionResult<IEnumerable<Blog>> GetAllBlogs()
         {
+            if (_blogRepository.CheckBlogsIsNull())
+            {
+                return NotFound();
+            }
             return _blogRepository.GetAllBlogs();
         }
 
         // GET: api/Blogs/5
         [HttpGet("{id}")]
-        public Blog GetBlog(int id)
+        public ActionResult<Blog> GetBlog(int id)
         {
-            return _blogRepository.GetBlog(id);
+            if (_blogRepository.CheckBlogsIsNull())
+            {
+                return NotFound();
+            }
+            var blog = _blogRepository.GetBlog(id);
+            if(blog == null)
+            {
+                return NotFound();
+            }
+            return blog;
         }
 
         // PUT: api/Blogs/5
-        [HttpPut]
-        public void PutBlog(Blog blog)
+        [HttpPut("{id}")]
+        public IActionResult PutBlog(int id, Blog blog)
         {
+            if (id != blog.BlogId)
+            {
+                return BadRequest();
+            }
             _blogRepository.PutBlog(blog);
-            _blogRepository.Save();
+            try
+            {
+                _blogRepository.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_blogRepository.BlogExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return NoContent();
         } 
 
         // POST: api/Blogs
         [HttpPost]
-        public void PostBlog(Blog blog)
+        public ActionResult<Blog> PostBlog(Blog blog)
         {
+            if (_blogRepository.CheckBlogsIsNull())
+            {
+                return Problem("Entity set 'BlogContext.Blogs'  is null.");
+            }
             _blogRepository.PostBlog(blog);
             _blogRepository.Save();
+            return CreatedAtAction(nameof(GetBlog), new { id = blog.BlogId }, blog);
         }
 
         // DELETE: api/Blogs/5
         [HttpDelete("{id}")]
-        public void DeleteBlog(Blog blog)
+        public IActionResult DeleteBlog(int id)
         {
-            _blogRepository.DeleteBlog(blog);
+            if (_blogRepository.CheckBlogsIsNull())
+            {
+                return NotFound();
+            }
+            var blogDel = _blogRepository.GetBlog(id);
+            if (blogDel == null)
+            {
+                return NotFound();
+            }
+            _blogRepository.DeleteBlog(blogDel);
             _blogRepository.Save();
+            return NoContent();
         }
     }
 }

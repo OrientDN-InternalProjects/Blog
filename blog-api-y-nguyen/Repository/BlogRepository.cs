@@ -18,31 +18,38 @@ namespace blog_api_y_nguyen.Repository
             _context = context;
         }
 
-        // Get all Blogs: 
-        public IEnumerable<Blog> GetAllBlogs()
+        // Check whether Authors is null or not:
+        public bool CheckBlogsIsNull()
+        {
+            if (_context.Authors == null) return true;
+            return false;
+        }
+
+        // GET all Blogs: 
+        public ActionResult<IEnumerable<Blog>> GetAllBlogs()
         {
             return _context.Blogs.ToList();
         }
 
-        // Get a Blog by Id:
+        // GET a Blog by Id:
         public Blog GetBlog(int id)
         {
             return _context.Blogs.Find(id);
         }
 
-        // Put a Blog
+        // PUT a Blog
         public void PutBlog(Blog blog)
         {
             _context.Blogs.Update(blog);
         }
 
-        //Post a Blog:
+        // POST a Blog:
         public void PostBlog(Blog blog)
         {
             _context.Blogs.Add(blog);
         }
 
-        // Delete a Blog:
+        // DELETE a Blog:
         public void DeleteBlog(Blog blog)
         {
             _context.Blogs.Remove(blog);
@@ -50,6 +57,12 @@ namespace blog_api_y_nguyen.Repository
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        // Check Blog Exists:
+        public bool BlogExists(int id)
+        {
+            return (_context.Blogs?.Any(e => e.BlogId == id)).GetValueOrDefault();
         }
     }
 }
