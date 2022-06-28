@@ -15,11 +15,9 @@ namespace blog_api_y_nguyen.Controllers
     public class PostsController : Controller
     {
         private IPostRepository _postRepository;
-        private readonly BlogContext _context;
         public PostsController (BlogContext context)
         {
-            _context = context;
-            _postRepository = new PostRepository(_context);
+            _postRepository = new PostRepository(context);
         }
 
         // GET: api/Posts

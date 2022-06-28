@@ -15,11 +15,9 @@ namespace blog_api_y_nguyen.Controllers
     public class AuthorsController : Controller
     {
         private IAuthorRepository _authorRepository;
-        private readonly BlogContext _context;
         public AuthorsController(BlogContext context)
         {
-            _context = context;
-            _authorRepository = new AuthorRepository(_context);
+            _authorRepository = new AuthorRepository(context);
         }
 
         // GET: api/Authors
