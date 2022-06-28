@@ -20,12 +20,10 @@ namespace blog_api_y_nguyen.Controllers
     public class BlogsController : Controller
     {
         private IBlogRepository _blogRepository;
-        private readonly BlogContext _context;
 
         public BlogsController(BlogContext context)
         {
-            _context = context;
-            _blogRepository = new BlogRepository(_context);
+            _blogRepository = new BlogRepository(context);
         }
 
         // GET: api/Blogs
