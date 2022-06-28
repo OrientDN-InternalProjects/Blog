@@ -17,38 +17,53 @@ namespace blog_api_y_nguyen.Repository
             _context = context;
         }
 
-        // Get all Author:
-        public IEnumerable<Author> GetAllAuthors()
+        // Check whether Authors is null or not:
+        public bool CheckAuthorsIsNull()
+        {
+            if ( _context.Authors == null ) return true;
+            return false;
+        }
+
+        // GET all Author:
+        public ActionResult<IEnumerable<Author>> GetAllAuthors()
         {
             return _context.Authors.ToList();
         }
 
-        // Get a Author by Id:
+        // GET an Author by Id:
         public Author GetAuthor(int id)
         {
             return _context.Authors.Find(id);
         }
 
-        // Put a Author:
+        // PUT an Author:
         public void PutAuthor(Author author)
         {
-            _context.Authors.Update(author);
+             _context.Authors.Update(author);
         }
 
-        //Post a Author:
+        // POST an Author:
         public void PostAuthor(Author author)
         {
             _context.Authors.Add(author);
         }
 
-        // Delete a Author:
+        // DELETE an Author:
         public void DeleteAuthor(Author author)
         {
             _context.Authors.Remove(author);
         }
+
+        // Save Change:
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        // Check Author Exists:
+        public bool AuthorExists(int id)
+        {
+            return (_context.Authors?.Any(e => e.AuthorId == id)).GetValueOrDefault();
         }
     }
 }
