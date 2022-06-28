@@ -22,32 +22,69 @@ namespace blog_api_y_nguyen.Controllers
 
         // GET: api/Posts
         [HttpGet]
-        public IEnumerable<Post> GetAllPosts()
+        public ActionResult<IEnumerable<Post>> GetAllPosts()
         {
+            if (_postRepository.CheckPostsIsNull())
+            {
+                return NotFound();
+            }
             return _postRepository.GetAllPosts();
         }
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
-        public Post GetPost(int id)
+        public ActionResult<Post> GetPost(int id)
         {
-            return _postRepository.GetPost(id);
+            if (_postRepository.CheckPostsIsNull())
+            {
+                return NotFound();
+            }
+            var post = _postRepository.GetPost(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return post;
         }
 
         // PUT: api/Posts/5
-        [HttpPut]
-        public void PutPost(Post post)
+        [HttpPut("{id}")]
+        public IActionResult PutPost(int id, Post post)
         {
+            if (id != post.PostId)
+            {
+                return BadRequest();
+            }
             _postRepository.PutPost(post);
-            _postRepository.Save();
+            try
+            {
+                _postRepository.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_postRepository.PostExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return NoContent();
         }
 
         // POST: api/Posts
         [HttpPost]
-        public void PostPost(Post post)
+        public ActionResult<Post> PostPost(Post post)
         {
+            if (_postRepository.CheckPostsIsNull())
+            {
+                return Problem("Entity set 'BlogContext.Posts'  is null.");
+            }
             _postRepository.PostPost(post);
             _postRepository.Save();
+            return CreatedAtAction(nameof(GetPost), new { id = post.PostId }, post);
         }
 
         // DELETE: api/Posts/5
