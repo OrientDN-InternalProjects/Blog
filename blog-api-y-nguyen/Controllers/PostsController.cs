@@ -71,7 +71,7 @@ namespace blog_api_y_nguyen.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Posts
@@ -102,7 +102,7 @@ namespace blog_api_y_nguyen.Controllers
             }
             _postRepository.DeletePost(postDel);
             _postRepository.Save();
-            return NoContent();
+            return Ok();
 
         }
     }

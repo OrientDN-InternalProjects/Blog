@@ -30,7 +30,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Blog>> GetAllBlogs()
         {
-            if (_blogRepository.CheckBlogsExist())
+            if (_blogRepository.CheckBlogsExist() == false)
             {
                 return NotFound();
             }
@@ -41,7 +41,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Blog> GetBlog(int id)
         {
-            if (_blogRepository.CheckBlogsExist())
+            if (_blogRepository.CheckBlogsExist() == false)
             {
                 return NotFound();
             }
@@ -77,14 +77,14 @@ namespace blog_api_y_nguyen.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok();
         } 
 
         // POST: api/Blogs
         [HttpPost]
         public ActionResult<Blog> PostBlog(Blog blog)
         {
-            if (_blogRepository.CheckBlogsExist())
+            if (_blogRepository.CheckBlogsExist() == false)
             {
                 return Problem("Entity set 'BlogContext.Blogs'  is null.");
             }
@@ -97,7 +97,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBlog(int id)
         {
-            if (_blogRepository.CheckBlogsExist())
+            if (_blogRepository.CheckBlogsExist() == false)
             {
                 return NotFound();
             }
@@ -108,7 +108,7 @@ namespace blog_api_y_nguyen.Controllers
             }
             _blogRepository.DeleteBlog(blogDel);
             _blogRepository.Save();
-            return NoContent();
+            return Ok();
         }
     }
 }

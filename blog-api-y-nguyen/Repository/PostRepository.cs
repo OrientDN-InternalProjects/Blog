@@ -18,7 +18,7 @@ namespace blog_api_y_nguyen.Repository
         }
 
         // Check whether Posts is null or not:
-        public bool CheckPostsIsNull()
+        public bool CheckPostsExist()
         {
             if (_context.Posts == null) return true;
             return false;
