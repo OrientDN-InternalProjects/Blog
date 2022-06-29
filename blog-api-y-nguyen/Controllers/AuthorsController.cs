@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using blog_api_y_nguyen.Models;
 using blog_api_y_nguyen.Repository;
+using blog_api_y_nguyen.Services;
 
 namespace blog_api_y_nguyen.Controllers
 {
@@ -14,32 +15,32 @@ namespace blog_api_y_nguyen.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private IAuthorRepository _authorRepository;
+        private IAuthorService _authorService;
         public AuthorsController(BlogContext context)
         {
-            _authorRepository = new AuthorRepository(context);
+            _authorService = new AuthorService(context);
         }
 
         // GET: api/Authors
         [HttpGet]
         public ActionResult<IEnumerable<Author>> GetAllAuthors()
         {
-            if ( _authorRepository.CheckAuthorsIsNull() )
+            if (_authorService.CheckAuthorsIsExist() == false)
             {
                 return NotFound();
             }
-            return _authorRepository.GetAllAuthors();
+            return _authorService.GetAllAuthors();
         }
 
         // GET: api/Authors/5
         [HttpGet("{id}")]
         public ActionResult<Author> GetAuthor(int id)
         {
-            if (_authorRepository.CheckAuthorsIsNull())
+            if (_authorService.CheckAuthorsIsExist() == false)
             {
                 return NotFound();
             }
-            var author = _authorRepository.GetAuthor(id);
+            var author = _authorService.GetAuthor(id);
             if ( author == null)
             {
                 return NotFound();
@@ -55,14 +56,14 @@ namespace blog_api_y_nguyen.Controllers
             {
                return BadRequest();
             }
-            _authorRepository.PutAuthor(author);
+            _authorService.PutAuthor(author);
             try
             {
-                _authorRepository.Save();
+                _authorService.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_authorRepository.AuthorExists(id))
+                if (!_authorService.AuthorExists(id))
                 {
                     return NotFound();
                 }
@@ -71,19 +72,19 @@ namespace blog_api_y_nguyen.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Authors
         [HttpPost]
-        public ActionResult<Author> PostBlog(Author author)
+        public ActionResult<Author> PostAuthor(Author author)
         {
-            if (_authorRepository.CheckAuthorsIsNull())
+            if (_authorService.CheckAuthorsIsExist() == false)
             {
                 return Problem("Entity set 'BlogContext.Authors'  is null.");
             }
-            _authorRepository.PostAuthor(author);
-            _authorRepository.Save();
+            _authorService.PostAuthor(author);
+            _authorService.Save();
             return CreatedAtAction(nameof(GetAuthor), new { id = author.AuthorId }, author);
         }
 
@@ -91,18 +92,18 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteAuthor(int id)
         {
-            if (_authorRepository.CheckAuthorsIsNull())
+            if (_authorService.CheckAuthorsIsExist() == false)
             {
                 return NotFound();
             }
-            var authorDel = _authorRepository.GetAuthor(id);
+            var authorDel = _authorService.GetAuthor(id);
             if (authorDel == null)
             {
                 return NotFound();
             }
-            _authorRepository.DeleteAuthor(authorDel);
-            _authorRepository.Save();
-            return NoContent();
+            _authorService.DeleteAuthor(authorDel);
+            _authorService.Save();
+            return Ok();
         }
     }
 }
