@@ -9,9 +9,9 @@ using blog_api_y_nguyen.Models;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
-
 using Microsoft.Extensions.Configuration;
 using blog_api_y_nguyen.Repository;
+using blog_api_y_nguyen.Services;
 
 namespace blog_api_y_nguyen.Controllers
 {
@@ -19,34 +19,33 @@ namespace blog_api_y_nguyen.Controllers
     [ApiController]
     public class BlogsController : Controller
     {
-        private IBlogRepository _blogRepository;
-
+        private IBlogService _blogService;
         public BlogsController(BlogContext context)
         {
-            _blogRepository = new BlogRepository(context);
+            _blogService = new BlogService(context);
         }
 
         // GET: api/Blogs
         [HttpGet]
         public ActionResult<IEnumerable<Blog>> GetAllBlogs()
         {
-            if (_blogRepository.CheckBlogsExist() == false)
+            if (_blogService.CheckBlogsExist() == false)
             {
                 return NotFound();
             }
-            return _blogRepository.GetAllBlogs();
+            return _blogService.GetAllBlogs();
         }
 
         // GET: api/Blogs/5
         [HttpGet("{id}")]
         public ActionResult<Blog> GetBlog(int id)
         {
-            if (_blogRepository.CheckBlogsExist() == false)
+            if (_blogService.CheckBlogsExist() == false)
             {
                 return NotFound();
             }
-            var blog = _blogRepository.GetBlog(id);
-            if(blog == null)
+            var blog = _blogService.GetBlog(id);
+            if (blog == null)
             {
                 return NotFound();
             }
@@ -61,14 +60,14 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return BadRequest();
             }
-            _blogRepository.PutBlog(blog);
+            _blogService.PutBlog(blog);
             try
             {
-                _blogRepository.Save();
+                _blogService.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_blogRepository.BlogExists(id))
+                if (!_blogService.BlogExists(id))
                 {
                     return NotFound();
                 }
@@ -78,18 +77,18 @@ namespace blog_api_y_nguyen.Controllers
                 }
             }
             return Ok();
-        } 
+        }
 
         // POST: api/Blogs
         [HttpPost]
         public ActionResult<Blog> PostBlog(Blog blog)
         {
-            if (_blogRepository.CheckBlogsExist() == false)
+            if (_blogService.CheckBlogsExist() == false)
             {
                 return Problem("Entity set 'BlogContext.Blogs'  is null.");
             }
-            _blogRepository.PostBlog(blog);
-            _blogRepository.Save();
+            _blogService.PostBlog(blog);
+            _blogService.Save();
             return CreatedAtAction(nameof(GetBlog), new { id = blog.BlogId }, blog);
         }
 
@@ -97,17 +96,17 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBlog(int id)
         {
-            if (_blogRepository.CheckBlogsExist() == false)
+            if (_blogService.CheckBlogsExist() == false)
             {
                 return NotFound();
             }
-            var blogDel = _blogRepository.GetBlog(id);
+            var blogDel = _blogService.GetBlog(id);
             if (blogDel == null)
             {
                 return NotFound();
             }
-            _blogRepository.DeleteBlog(blogDel);
-            _blogRepository.Save();
+            _blogService.DeleteBlog(blogDel);
+            _blogService.Save();
             return Ok();
         }
     }
