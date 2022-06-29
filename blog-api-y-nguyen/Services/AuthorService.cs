@@ -13,9 +13,9 @@ namespace blog_api_y_nguyen.Services
         }
 
         // Check whether Authors is exist or not:
-        public bool CheckAuthorsIsExist()
+        public bool CheckAuthorsExist()
         {
-            return _authorRepository.CheckAuthorsIsExist();
+            return _authorRepository.CheckAuthorsExist();
         }
 
         // GET: api/Authors

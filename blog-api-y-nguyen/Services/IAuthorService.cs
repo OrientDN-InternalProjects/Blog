@@ -5,7 +5,7 @@ namespace blog_api_y_nguyen.Services
 {
     public interface IAuthorService
     {
-        bool CheckAuthorsIsExist();
+        bool CheckAuthorsExist();
         ActionResult<IEnumerable<Author>> GetAllAuthors();
         Author GetAuthor(int id);
         void PutAuthor(Author author);

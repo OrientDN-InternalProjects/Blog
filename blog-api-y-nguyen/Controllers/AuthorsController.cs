@@ -25,7 +25,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Author>> GetAllAuthors()
         {
-            if (_authorService.CheckAuthorsIsExist() == false)
+            if (_authorService.CheckAuthorsExist() == false)
             {
                 return NotFound();
             }
@@ -36,7 +36,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Author> GetAuthor(int id)
         {
-            if (_authorService.CheckAuthorsIsExist() == false)
+            if (_authorService.CheckAuthorsExist() == false)
             {
                 return NotFound();
             }
@@ -79,7 +79,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpPost]
         public ActionResult<Author> PostAuthor(Author author)
         {
-            if (_authorService.CheckAuthorsIsExist() == false)
+            if (_authorService.CheckAuthorsExist() == false)
             {
                 return Problem("Entity set 'BlogContext.Authors'  is null.");
             }
@@ -92,7 +92,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteAuthor(int id)
         {
-            if (_authorService.CheckAuthorsIsExist() == false)
+            if (_authorService.CheckAuthorsExist() == false)
             {
                 return NotFound();
             }

@@ -19,7 +19,7 @@ namespace blog_api_y_nguyen.Repository
         }
 
         // Check whether Authors is null or not:
-        public bool CheckBlogsIsNull()
+        public bool CheckBlogsExist()
         {
             if (_context.Authors == null) return true;
             return false;

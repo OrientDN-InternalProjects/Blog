@@ -5,7 +5,7 @@ namespace blog_api_y_nguyen.Repository
 {
     public interface IAuthorRepository
     {
-        bool CheckAuthorsIsExist();
+        bool CheckAuthorsExist();
         ActionResult<IEnumerable<Author>> GetAllAuthors();
         Author GetAuthor(int id);
         void PutAuthor(Author author);

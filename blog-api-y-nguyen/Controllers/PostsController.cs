@@ -24,7 +24,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Post>> GetAllPosts()
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postRepository.CheckPostsExist() == false)
             {
                 return NotFound();
             }
@@ -35,7 +35,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Post> GetPost(int id)
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postRepository.CheckPostsExist() == false)
             {
                 return NotFound();
             }
@@ -78,7 +78,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpPost]
         public ActionResult<Post> PostPost(Post post)
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postRepository.CheckPostsExist() == false)
             {
                 return Problem("Entity set 'BlogContext.Posts'  is null.");
             }
@@ -89,10 +89,21 @@ namespace blog_api_y_nguyen.Controllers
 
         // DELETE: api/Posts/5
         [HttpDelete("{id}")]
-        public void DeletePost(Post post)
+        public IActionResult DeletePost(int id)
         {
-            _postRepository.DeletePost(post);
+            if (_postRepository.CheckPostsExist() == false)
+            {
+                return NotFound();
+            }
+            var postDel = _postRepository.GetPost(id);
+            if (postDel == null)
+            {
+                return NotFound();
+            }
+            _postRepository.DeletePost(postDel);
             _postRepository.Save();
+            return NoContent();
+
         }
     }
 }
