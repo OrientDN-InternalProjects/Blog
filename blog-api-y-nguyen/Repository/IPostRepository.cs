@@ -5,7 +5,7 @@ namespace blog_api_y_nguyen.Repository
 {
     public interface IPostRepository
     {
-        bool CheckPostsIsNull();
+        bool CheckPostsExist();
         ActionResult<IEnumerable<Post>> GetAllPosts();
         Post GetPost(int id);
         void PutPost(Post post);

@@ -1,6 +1,6 @@
 ﻿namespace blog_api_y_nguyen.Models
 {
-    public class Author
+    public class Blog
     {
         public int AuthorId { get; set; }
         public string Name { get; set; }

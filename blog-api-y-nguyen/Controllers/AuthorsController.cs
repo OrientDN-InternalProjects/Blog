@@ -23,9 +23,9 @@ namespace blog_api_y_nguyen.Controllers
 
         // GET: api/Authors
         [HttpGet]
-        public ActionResult<IEnumerable<Author>> GetAllAuthors()
+        public ActionResult<IEnumerable<Blog>> GetAllAuthors()
         {
-            if (_authorService.CheckAuthorsIsExist() == false)
+            if (_authorService.CheckAuthorsExist() == false)
             {
                 return NotFound();
             }
@@ -34,9 +34,9 @@ namespace blog_api_y_nguyen.Controllers
 
         // GET: api/Authors/5
         [HttpGet("{id}")]
-        public ActionResult<Author> GetAuthor(int id)
+        public ActionResult<Blog> GetAuthor(int id)
         {
-            if (_authorService.CheckAuthorsIsExist() == false)
+            if (_authorService.CheckAuthorsExist() == false)
             {
                 return NotFound();
             }
@@ -50,7 +50,7 @@ namespace blog_api_y_nguyen.Controllers
 
         // PUT: api/Authors/5
         [HttpPut("{id}")]
-        public IActionResult PutAuthor(int id, Author author)
+        public IActionResult PutAuthor(int id, Blog author)
         {
             if (id != author.AuthorId)
             {
@@ -77,9 +77,9 @@ namespace blog_api_y_nguyen.Controllers
 
         // POST: api/Authors
         [HttpPost]
-        public ActionResult<Author> PostAuthor(Author author)
+        public ActionResult<Blog> PostAuthor(Blog author)
         {
-            if (_authorService.CheckAuthorsIsExist() == false)
+            if (_authorService.CheckAuthorsExist() == false)
             {
                 return Problem("Entity set 'BlogContext.Authors'  is null.");
             }
@@ -92,7 +92,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteAuthor(int id)
         {
-            if (_authorService.CheckAuthorsIsExist() == false)
+            if (_authorService.CheckAuthorsExist() == false)
             {
                 return NotFound();
             }

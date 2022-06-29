@@ -24,7 +24,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Post>> GetAllPosts()
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postRepository.CheckPostsExist())
             {
                 return NotFound();
             }
@@ -35,7 +35,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Post> GetPost(int id)
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postRepository.CheckPostsExist())
             {
                 return NotFound();
             }
@@ -78,7 +78,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpPost]
         public ActionResult<Post> PostPost(Post post)
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postRepository.CheckPostsExist())
             {
                 return Problem("Entity set 'BlogContext.Posts'  is null.");
             }

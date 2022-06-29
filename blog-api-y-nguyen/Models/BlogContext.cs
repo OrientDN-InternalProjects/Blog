@@ -16,7 +16,7 @@ namespace blog_api_y_nguyen.Models
             this.value = value;
         }
 
-        public DbSet<Author> Authors { get; set; } = null!;
+        public DbSet<Blog> Authors { get; set; } = null!;
         public DbSet<Post> Posts { get; set; } = null!;
         public DbSet<Blog> Blogs { get; set; } = null!;
     }

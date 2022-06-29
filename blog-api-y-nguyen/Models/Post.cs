@@ -9,7 +9,7 @@
         public int BlogId { get; set; }
         public int AuthorId { get; set; }
         public virtual Blog? Blog { get; set; }
-        public virtual Author? Author { get; set; }
+        public virtual Blog? Author { get; set; }
 
     }
 }

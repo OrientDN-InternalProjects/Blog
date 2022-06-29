@@ -5,12 +5,12 @@ namespace blog_api_y_nguyen.Services
 {
     public interface IAuthorService
     {
-        bool CheckAuthorsIsExist();
-        ActionResult<IEnumerable<Author>> GetAllAuthors();
-        Author GetAuthor(int id);
-        void PutAuthor(Author author);
-        void PostAuthor(Author author);
-        void DeleteAuthor(Author author);
+        bool CheckAuthorsExist();
+        ActionResult<IEnumerable<Blog>> GetAllAuthors();
+        Blog GetAuthor(int id);
+        void PutAuthor(Blog author);
+        void PostAuthor(Blog author);
+        void DeleteAuthor(Blog author);
         void Save();
         bool AuthorExists(int id);
     }
