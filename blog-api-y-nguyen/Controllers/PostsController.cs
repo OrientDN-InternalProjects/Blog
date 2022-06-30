@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using blog_api_y_nguyen.Models;
 using blog_api_y_nguyen.Repository;
 using blog_api_y_nguyen.Services;
+using AutoMapper;
 
 namespace blog_api_y_nguyen.Controllers
 {
@@ -15,10 +16,13 @@ namespace blog_api_y_nguyen.Controllers
     [ApiController]
     public class PostsController : Controller
     {
-        private IPostService _postService;
-        public PostsController(BlogContext context)
+        private readonly IPostService _postService;
+        private readonly IMapper _autoMapper;
+
+        public PostsController(IMapper autoMapper, IPostService postService)
         {
-            _postService = new PostService(context);
+            _autoMapper = autoMapper;
+            _postService = postService;
         }
 
         // GET: api/Posts
@@ -29,7 +33,7 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return NotFound();
             }
-            return _postService.GetAllPosts();
+            return Ok(_postService.GetAllPosts());
         }
 
         // GET: api/Posts/5

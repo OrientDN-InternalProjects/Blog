@@ -12,6 +12,7 @@ using System.Configuration;
 using Microsoft.Extensions.Configuration;
 using blog_api_y_nguyen.Repository;
 using blog_api_y_nguyen.Services;
+using AutoMapper;
 
 namespace blog_api_y_nguyen.Controllers
 {
@@ -19,10 +20,13 @@ namespace blog_api_y_nguyen.Controllers
     [ApiController]
     public class BlogsController : Controller
     {
-        private IBlogService _blogService;
-        public BlogsController(BlogContext context)
+        private readonly IBlogService _blogService;
+        private readonly IMapper _autoMapper;
+
+        public BlogsController(IMapper autoMapper, IBlogService blogService)
         {
-            _blogService = new BlogService(context);
+            _autoMapper = autoMapper;
+            _blogService = blogService;
         }
 
         // GET: api/Blogs

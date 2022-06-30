@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using blog_api_y_nguyen.Models;
 using blog_api_y_nguyen.Repository;
 using blog_api_y_nguyen.Services;
+using AutoMapper;
 
 namespace blog_api_y_nguyen.Controllers
 {
@@ -15,10 +16,12 @@ namespace blog_api_y_nguyen.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private IAuthorService _authorService;
-        public AuthorsController(BlogContext context)
+        private readonly IAuthorService _authorService;
+        private readonly IMapper _autoMapper;
+        public AuthorsController(IMapper autoMapper, IAuthorService authorService)
         {
-            _authorService = new AuthorService(context);
+            _autoMapper = autoMapper;
+            _authorService = authorService;
         }
 
         // GET: api/Authors
