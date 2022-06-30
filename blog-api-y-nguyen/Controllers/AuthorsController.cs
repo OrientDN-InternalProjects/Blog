@@ -32,7 +32,7 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return NotFound();
             }
-            return _authorService.GetAllAuthors();
+            return Ok(_authorService.GetAllAuthors());
         }
 
         // GET: api/Authors/5
