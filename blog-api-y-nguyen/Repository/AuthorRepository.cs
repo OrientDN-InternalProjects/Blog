@@ -25,7 +25,7 @@ namespace blog_api_y_nguyen.Repository
         }
 
         // GET all Author:
-        public ActionResult<IEnumerable<Author>> GetAllAuthors()
+        public IEnumerable<Author> GetAllAuthors()
         {
             return _context.Authors.ToList();
         }

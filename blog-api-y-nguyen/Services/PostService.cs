@@ -18,7 +18,7 @@ namespace blog_api_y_nguyen.Services
         }
 
         // GET: api/Posts
-        public ActionResult<IEnumerable<Post>> GetAllPosts()
+        public IEnumerable<Post> GetAllPosts()
         {
             return _postRepository.GetAllPosts();
         }

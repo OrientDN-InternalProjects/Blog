@@ -25,7 +25,7 @@ namespace blog_api_y_nguyen.Repository
         }
 
         // GET all Posts:
-        public ActionResult<IEnumerable<Post>> GetAllPosts()
+        public IEnumerable<Post> GetAllPosts()
         {
             return _context.Posts.ToList();
         }

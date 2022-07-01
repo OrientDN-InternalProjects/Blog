@@ -37,7 +37,7 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return NotFound();
             }
-            return _blogService.GetAllBlogs();
+            return Ok(_blogService.GetAllBlogs());
         }
 
         // GET: api/Blogs/5

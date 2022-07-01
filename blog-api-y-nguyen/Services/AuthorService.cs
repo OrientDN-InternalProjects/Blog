@@ -19,7 +19,7 @@ namespace blog_api_y_nguyen.Services
         }
 
         // GET: api/Authors
-        public ActionResult<IEnumerable<Author>> GetAllAuthors()
+        public IEnumerable<Author> GetAllAuthors()
         {
             return _authorRepository.GetAllAuthors();
         }
