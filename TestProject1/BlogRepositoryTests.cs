@@ -121,7 +121,6 @@ namespace TestProject1
                 index++;
                 await context.Blogs.AddAsync(blog);
             }
-
             await context.SaveChangesAsync();
         }
     }

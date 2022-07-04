@@ -37,26 +37,29 @@ namespace blog_api_y_nguyen.Repository
         }
 
         // PUT a Blog
-        public void PutBlog(Blog blog)
+        public Blog PutBlog(Blog blog)
         {
             _context.Blogs.Update(blog);
             _context.SaveChanges();
+            return blog;
         }
 
         // POST a Blog:
-        public void PostBlog(Blog blog)
+        public Blog PostBlog(Blog blog)
         {
             _context.Blogs.Add(blog);
             _context.SaveChanges();
+            return blog;
         }
 
         // DELETE a Blog:
-        public void DeleteBlog(Blog blog)
+        public Blog DeleteBlog(Blog blog)
         {
             _context.Blogs.Remove(blog);
             _context.SaveChanges();
+            return blog;
         }
-       
+
         // Check Blog Exists:
         public bool BlogExists(int id)
         {
