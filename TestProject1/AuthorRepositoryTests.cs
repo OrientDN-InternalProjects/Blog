@@ -21,9 +21,6 @@ namespace TestProject1
             dbContextOptions = new DbContextOptionsBuilder<BlogContext>()
                 .UseInMemoryDatabase(dbName)
                 .Options;
-            //BlogContext context = new BlogContext(dbContextOptions);
-            //PopulateDataAsync(context);
-            //_authorRepository = new AuthorRepository(context);
         }
  
         [Fact]
@@ -33,6 +30,8 @@ namespace TestProject1
 
             // Act
             var authorList = repository.GetAllAuthors();
+            
+            // Assert
             Assert.Equal(3, authorList.Count());
         }
 

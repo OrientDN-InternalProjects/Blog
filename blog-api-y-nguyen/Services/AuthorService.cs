@@ -7,9 +7,9 @@ namespace blog_api_y_nguyen.Services
     public class AuthorService : IAuthorService
     {
         private IAuthorRepository _authorRepository;
-        public AuthorService(BlogContext context)
+        public AuthorService(IAuthorRepository authorRepository)
         {
-            _authorRepository = new AuthorRepository(context);
+            _authorRepository = authorRepository;
         }
 
         // Check whether Authors is exist or not:

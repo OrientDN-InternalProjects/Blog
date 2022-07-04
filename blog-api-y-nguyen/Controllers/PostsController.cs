@@ -17,11 +17,8 @@ namespace blog_api_y_nguyen.Controllers
     public class PostsController : Controller
     {
         private readonly IPostService _postService;
-        private readonly IMapper _autoMapper;
-
-        public PostsController(IMapper autoMapper, IPostService postService)
+        public PostsController(IPostService postService)
         {
-            _autoMapper = autoMapper;
             _postService = postService;
         }
 
@@ -29,7 +26,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Post>> GetAllPosts()
         {
-            if (_postService.CheckPostsExist() == false)
+            if (!_postService.CheckPostsExist())
             {
                 return NotFound();
             }
@@ -40,7 +37,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Post> GetPost(int id)
         {
-            if (_postService.CheckPostsExist() == false)
+            if (!_postService.CheckPostsExist())
             {
                 return NotFound();
             }
@@ -75,7 +72,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpPost]
         public ActionResult<Post> PostPost(Post post)
         {
-            if (_postService.CheckPostsExist() == false)
+            if (!_postService.CheckPostsExist())
             {
                 return Problem("Entity set 'PostContext.Posts'  is null.");
             }
@@ -87,7 +84,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeletePost(int id)
         {
-            if (_postService.CheckPostsExist() == false)
+            if (!_postService.CheckPostsExist())
             {
                 return NotFound();
             }

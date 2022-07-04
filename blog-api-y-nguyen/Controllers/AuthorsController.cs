@@ -17,10 +17,8 @@ namespace blog_api_y_nguyen.Controllers
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorService _authorService;
-        private readonly IMapper _autoMapper;
-        public AuthorsController(IMapper autoMapper, IAuthorService authorService)
+        public AuthorsController(IAuthorService authorService)
         {
-            _autoMapper = autoMapper;
             _authorService = authorService;
         }
 
@@ -28,7 +26,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Author>> GetAllAuthors()
         {
-            if (_authorService.CheckAuthorsExist() == false)
+            if (!_authorService.CheckAuthorsExist())
             {
                 return NotFound();
             }
@@ -39,7 +37,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Author> GetAuthor(int id)
         {
-            if (_authorService.CheckAuthorsExist() == false)
+            if (!_authorService.CheckAuthorsExist())
             {
                 return NotFound();
             }
@@ -74,7 +72,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpPost]
         public ActionResult<Author> PostAuthor(Author author)
         {
-            if (_authorService.CheckAuthorsExist() == false)
+            if (!_authorService.CheckAuthorsExist())
             {
                 return Problem("Entity set 'BlogContext.Authors'  is null.");
             }
@@ -86,7 +84,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteAuthor(int id)
         {
-            if (_authorService.CheckAuthorsExist() == false)
+            if (!_authorService.CheckAuthorsExist())
             {
                 return NotFound();
             }

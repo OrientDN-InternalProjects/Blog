@@ -6,9 +6,9 @@ namespace blog_api_y_nguyen.Services
     public class BlogService : IBlogService
     {
         private IBlogRepository _blogRepository;
-        public BlogService(BlogContext context)
+        public BlogService(IBlogRepository blogRepository)
         {
-            _blogRepository = new BlogRepository(context);
+            _blogRepository = blogRepository;
         }
 
         // Check whether Blogs is exist or not:

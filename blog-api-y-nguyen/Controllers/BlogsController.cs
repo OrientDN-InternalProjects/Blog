@@ -21,11 +21,9 @@ namespace blog_api_y_nguyen.Controllers
     public class BlogsController : Controller
     {
         private readonly IBlogService _blogService;
-        private readonly IMapper _autoMapper;
 
-        public BlogsController(IMapper autoMapper, IBlogService blogService)
+        public BlogsController(IBlogService blogService)
         {
-            _autoMapper = autoMapper;
             _blogService = blogService;
         }
 
@@ -33,7 +31,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Blog>> GetAllBlogs()
         {
-            if (_blogService.CheckBlogsExist() == false)
+            if (!_blogService.CheckBlogsExist())
             {
                 return NotFound();
             }
@@ -44,7 +42,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Blog> GetBlog(int id)
         {
-            if (_blogService.CheckBlogsExist() == false)
+            if (!_blogService.CheckBlogsExist())
             {
                 return NotFound();
             }
@@ -79,7 +77,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpPost]
         public ActionResult<Blog> PostBlog(Blog blog)
         {
-            if (_blogService.CheckBlogsExist() == false)
+            if (!_blogService.CheckBlogsExist())
             {
                 return Problem("Entity set 'BlogContext.Blogs'  is null.");
             }
@@ -91,7 +89,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteBlog(int id)
         {
-            if (_blogService.CheckBlogsExist() == false)
+            if (!_blogService.CheckBlogsExist())
             {
                 return NotFound();
             }

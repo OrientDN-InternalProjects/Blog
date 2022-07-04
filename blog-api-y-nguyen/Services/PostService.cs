@@ -6,9 +6,9 @@ namespace blog_api_y_nguyen.Services
     public class PostService : IPostService
     {
         private IPostRepository _postRepository;
-        public PostService(BlogContext context)
+        public PostService(IPostRepository postRepository)
         {
-            _postRepository = new PostRepository(context);
+            _postRepository = postRepository;
         }
 
         // Check whether Posts is exist or not:
