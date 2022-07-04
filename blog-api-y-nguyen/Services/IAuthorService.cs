@@ -1,9 +1,9 @@
 ﻿using blog_api_y_nguyen.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace blog_api_y_nguyen.Repository
+namespace blog_api_y_nguyen.Services
 {
-    public interface IAuthorRepository
+    public interface IAuthorService
     {
         bool CheckAuthorsExist();
         ActionResult<IEnumerable<Author>> GetAllAuthors();

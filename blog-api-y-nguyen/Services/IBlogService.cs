@@ -1,9 +1,8 @@
 ﻿using blog_api_y_nguyen.Models;
 using Microsoft.AspNetCore.Mvc;
-
-namespace blog_api_y_nguyen.Repository
+namespace blog_api_y_nguyen.Services
 {
-    public interface IBlogRepository
+    public interface IBlogService
     {
         bool CheckBlogsExist();
         ActionResult<IEnumerable<Blog>> GetAllBlogs();
@@ -13,6 +12,5 @@ namespace blog_api_y_nguyen.Repository
         void DeleteBlog(Blog blog);
         void Save();
         bool BlogExists(int id);
-
     }
 }

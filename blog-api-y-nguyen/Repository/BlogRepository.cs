@@ -18,11 +18,11 @@ namespace blog_api_y_nguyen.Repository
             _context = context;
         }
 
-        // Check whether Authors is null or not:
-        public bool CheckBlogsIsNull()
+        // Check whether Blogs is null or not:
+        public bool CheckBlogsExist()
         {
-            if (_context.Authors == null) return true;
-            return false;
+            if (_context.Blogs == null) return false;
+            return true;
         }
 
         // GET all Blogs: 

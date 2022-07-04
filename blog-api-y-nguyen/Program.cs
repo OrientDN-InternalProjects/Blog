@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 using blog_api_y_nguyen.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
-
+using blog_api_y_nguyen.Repository;
+using blog_api_y_nguyen.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,13 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<BlogContext>(opt =>
 
     opt.UseSqlServer(builder.Configuration.GetConnectionString("BlogContext")));
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IPostRepository, PostRepository>();
+builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 
 var app = builder.Build();

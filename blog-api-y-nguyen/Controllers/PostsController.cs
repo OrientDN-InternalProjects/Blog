@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using blog_api_y_nguyen.Models;
 using blog_api_y_nguyen.Repository;
+using blog_api_y_nguyen.Services;
+using AutoMapper;
 
 namespace blog_api_y_nguyen.Controllers
 {
@@ -14,32 +16,35 @@ namespace blog_api_y_nguyen.Controllers
     [ApiController]
     public class PostsController : Controller
     {
-        private IPostRepository _postRepository;
-        public PostsController (BlogContext context)
+        private readonly IPostService _postService;
+        private readonly IMapper _autoMapper;
+
+        public PostsController(IMapper autoMapper, IPostService postService)
         {
-            _postRepository = new PostRepository(context);
+            _autoMapper = autoMapper;
+            _postService = postService;
         }
 
         // GET: api/Posts
         [HttpGet]
         public ActionResult<IEnumerable<Post>> GetAllPosts()
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postService.CheckPostsExist() == false)
             {
                 return NotFound();
             }
-            return _postRepository.GetAllPosts();
+            return Ok(_postService.GetAllPosts());
         }
 
         // GET: api/Posts/5
         [HttpGet("{id}")]
         public ActionResult<Post> GetPost(int id)
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postService.CheckPostsExist() == false)
             {
                 return NotFound();
             }
-            var post = _postRepository.GetPost(id);
+            var post = _postService.GetPost(id);
             if (post == null)
             {
                 return NotFound();
@@ -55,14 +60,14 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return BadRequest();
             }
-            _postRepository.PutPost(post);
+            _postService.PutPost(post);
             try
             {
-                _postRepository.Save();
+                _postService.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_postRepository.PostExists(id))
+                if (!_postService.PostExists(id))
                 {
                     return NotFound();
                 }
@@ -71,28 +76,38 @@ namespace blog_api_y_nguyen.Controllers
                     throw;
                 }
             }
-            return NoContent();
+            return Ok();
         }
 
         // POST: api/Posts
         [HttpPost]
         public ActionResult<Post> PostPost(Post post)
         {
-            if (_postRepository.CheckPostsIsNull())
+            if (_postService.CheckPostsExist() == false)
             {
-                return Problem("Entity set 'BlogContext.Posts'  is null.");
+                return Problem("Entity set 'PostContext.Posts'  is null.");
             }
-            _postRepository.PostPost(post);
-            _postRepository.Save();
+            _postService.PostPost(post);
+            _postService.Save();
             return CreatedAtAction(nameof(GetPost), new { id = post.PostId }, post);
         }
 
         // DELETE: api/Posts/5
         [HttpDelete("{id}")]
-        public void DeletePost(Post post)
+        public IActionResult DeletePost(int id)
         {
-            _postRepository.DeletePost(post);
-            _postRepository.Save();
+            if (_postService.CheckPostsExist() == false)
+            {
+                return NotFound();
+            }
+            var postDel = _postService.GetPost(id);
+            if (postDel == null)
+            {
+                return NotFound();
+            }
+            _postService.DeletePost(postDel);
+            _postService.Save();
+            return Ok();
         }
     }
 }

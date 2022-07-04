@@ -1,9 +1,8 @@
 ﻿using blog_api_y_nguyen.Models;
 using Microsoft.AspNetCore.Mvc;
-
-namespace blog_api_y_nguyen.Repository
+namespace blog_api_y_nguyen.Services
 {
-    public interface IPostRepository
+    public interface IPostService
     {
         bool CheckPostsExist();
         ActionResult<IEnumerable<Post>> GetAllPosts();
@@ -13,6 +12,5 @@ namespace blog_api_y_nguyen.Repository
         void DeletePost(Post post);
         void Save();
         bool PostExists(int id);
-
     }
 }
