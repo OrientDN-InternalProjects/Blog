@@ -1,75 +1,114 @@
-﻿//using blog_api_y_nguyen.Models;
-//using blog_api_y_nguyen.Repository;
-//using blog_api_y_nguyen.Services;
-//using Microsoft.EntityFrameworkCore;
-//using Moq;
-//using NUnit.Framework;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using Xunit;
-//using Assert = Xunit.Assert;
+﻿using blog_api_y_nguyen.Models;
+using blog_api_y_nguyen.Repository;
+using blog_api_y_nguyen.Services;
+using Microsoft.EntityFrameworkCore;
+using Moq;
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Xunit;
+using Assert = Xunit.Assert;
 
-//namespace TestProject1
-//{
-//    public class AuthorServiceTests
-//    {
-//        private DbContextOptions<BlogContext> dbContextOptions;
-//        private readonly AuthorService _authorService;
-//        public AuthorServiceTests()
-//        {
-//            var dbName = $"AuthorPostsDb_{DateTime.Now.ToFileTimeUtc()}";
-//            dbContextOptions = new DbContextOptionsBuilder<BlogContext>()
-//                .UseInMemoryDatabase(dbName)
-//                .Options;
-//        }
+namespace TestProject1
+{
+    public class AuthorServiceTests
+    {
+        private readonly AuthorService _authorService;
+        private readonly Mock<IAuthorRepository> _authorRepoMock = new Mock<IAuthorRepository>();
+        public AuthorServiceTests()
+        {
+            _authorService = new AuthorService(_authorRepoMock.Object);
+        }
 
-//        [Fact]
-//        public void GetAllAuthors_Success_Test()
-//        {
-//            var service = CreateService();
+        [Fact]
+        public void GetAllAuthors_Success_Test()
+        {
+            // Arrange
+            List<Author> authors = new List<Author>();
+            var authorDto_1 = new Author { AuthorId = 1, Name = "authorDto_1", Age = 1 };
+            var authorDto_2 = new Author { AuthorId = 2, Name = "authorDto_2", Age = 2 };
+            var authorDto_3 = new Author { AuthorId = 3, Name = "authorDto_3", Age = 3 };
+            authors.Add(authorDto_1);
+            authors.Add(authorDto_2);
+            authors.Add(authorDto_3);
+            _authorRepoMock.Setup(x => x.GetAllAuthors()).Returns(authors);
 
-//            // Act
-//            var authorList = service.GetAllAuthors();
-//            Assert.Equal(3, authorList.Count());
-//        }
+            // Act
+            var authorList = _authorService.GetAllAuthors();
 
-//        [Fact]
-//        public void GetAuthor_Success_Test()
-//        {
-//            var service = CreateService();
+            // Assert
+            Assert.Equal(3, authorList.Count());
+        }
 
-//            // Act
-//            var author = service.GetAuthor(2);
+        [Fact]
+        public void GetAuthor_Success_Test()
+        {
+            // Arrange
+            var AuthorId = 2;
+            var Name = "Peter";
+            var Age = 24;
+            var authorDto = new Author { AuthorId = AuthorId, Name = Name, Age = Age };
+            _authorRepoMock.Setup(x => x.GetAuthor(AuthorId)).Returns(authorDto);
 
-//            // Assert
-//            Assert.Equal("Author_2", author.Name);
-//        }
-//        //public AuthorService CreateService()
-//        //{
-//        //    BlogContext context = new BlogContext(dbContextOptions);
-//        //    PopulateDataAsync(context);
-//        //    return new AuthorService(context);
-//        //}
-//        public async Task PopulateDataAsync(BlogContext context)
-//        {
-//            int index = 1;
+            // Act
+            var author = _authorService.GetAuthor(2);
 
-//            while (index <= 3)
-//            {
-//                var author = new Author()
-//                {
-//                    AuthorId = index,
-//                    Name = $"Author_{index}",
-//                    Age = index
-//                };
-//                index++;
-//                await context.Authors.AddAsync(author);
-//            }
+            // Assert
+            Assert.Equal("Peter", author.Name);
+        }
 
-//            await context.SaveChangesAsync();
-//        }
-//    }
-//}
+        [Fact]
+        public void PostAuthor_Success_Test()
+        {
+            // Arrange
+            var AuthorId = 4;
+            var Name = "Author_4";
+            var Age = 4;
+            var authorDto = new Author { AuthorId = AuthorId, Name = Name, Age = Age };
+            _authorRepoMock.Setup(x => x.PostAuthor(authorDto)).Returns(authorDto);
+
+            // Act
+            _authorService.PostAuthor(authorDto);
+
+            // Assert
+            Assert.Equal(4, authorDto.Age);
+        }
+
+        [Fact]
+        public void PutAuthor_Success_Test()
+        {
+            // Arrange
+            var AuthorId = 2;
+            var Name = "Author_2.2";
+            var Age = 2;
+            var authorDto = new Author { AuthorId = AuthorId, Name = Name, Age = Age };
+            _authorRepoMock.Setup(x => x.PutAuthor(authorDto)).Returns(authorDto);
+
+            // Act
+            _authorService.PutAuthor(authorDto);
+
+            // Assert
+            Assert.Equal("Author_2.2", authorDto.Name);
+        }
+
+        [Fact]
+        public void DeleteAuthor_Success_Test()
+        {
+            // Arrange
+            var AuthorId = 1;
+            var Name = "Author_1";
+            var Age = 1;
+            var authorDto = new Author { AuthorId = AuthorId, Name = Name, Age = Age };
+            _authorRepoMock.Setup(x => x.PutAuthor(authorDto)).Returns(authorDto);
+
+            // Act
+            _authorService.DeleteAuthor(authorDto);
+
+            // Assert
+            Assert.Equal("Author_1", authorDto.Name);
+        }
+    }
+}

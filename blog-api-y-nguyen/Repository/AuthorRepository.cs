@@ -39,24 +39,30 @@ namespace blog_api_y_nguyen.Repository
         }
 
         // PUT an Author:
-        public void PutAuthor(Author author)
+        public Author PutAuthor(Author author)
         {
-             _context.Authors.Update(author);
+            var entry = _context.Entry(author);
+            entry.State = EntityState.Modified;
             _context.SaveChanges();
+            //_context.Authors.Update(author);
+            //_context.SaveChanges();
+            return author;
         }
 
         // POST an Author:
-        public void PostAuthor(Author author)
+        public Author PostAuthor(Author author)
         {
             _context.Authors.Add(author);
             _context.SaveChanges();
+            return author;
         }
 
         // DELETE an Author:
-        public void DeleteAuthor(Author author)
+        public Author DeleteAuthor(Author author)
         {
             _context.Authors.Remove(author);
             _context.SaveChanges();
+            return author;
         }
 
         // Check Author Exists:

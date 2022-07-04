@@ -8,9 +8,9 @@ namespace blog_api_y_nguyen.Repository
         bool CheckAuthorsExist();
         IEnumerable<Author> GetAllAuthors();
         Author GetAuthor(int id);
-        void PutAuthor(Author author);
-        void PostAuthor(Author author);
-        void DeleteAuthor(Author author);
+        Author PutAuthor(Author author);
+        Author PostAuthor(Author author);
+        Author DeleteAuthor(Author author);
         bool AuthorExists(int id);
     }
 }
