@@ -56,27 +56,19 @@ namespace blog_api_y_nguyen.Controllers
         [HttpPut("{id}")]
         public IActionResult PutPost(int id, Post post)
         {
-            if (id != post.PostId)
+            if (id != post.BlogId)
             {
                 return BadRequest();
             }
-            _postService.PutPost(post);
-            try
+            if (!_postService.PostExists(id))
             {
-                _postService.Save();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!_postService.PostExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _postService.PutPost(post);
+                return Ok();
             }
-            return Ok();
         }
 
         // POST: api/Posts
@@ -88,7 +80,6 @@ namespace blog_api_y_nguyen.Controllers
                 return Problem("Entity set 'PostContext.Posts'  is null.");
             }
             _postService.PostPost(post);
-            _postService.Save();
             return CreatedAtAction(nameof(GetPost), new { id = post.PostId }, post);
         }
 
@@ -100,13 +91,12 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return NotFound();
             }
-            var postDel = _postService.GetPost(id);
-            if (postDel == null)
+            var PostToBeDeleted = _postService.GetPost(id);
+            if (PostToBeDeleted == null)
             {
                 return NotFound();
             }
-            _postService.DeletePost(postDel);
-            _postService.Save();
+            _postService.DeletePost(PostToBeDeleted);
             return Ok();
         }
     }

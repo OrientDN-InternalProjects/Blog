@@ -34,27 +34,18 @@ namespace blog_api_y_nguyen.Services
         public void PutAuthor(Author author)
         {
             _authorRepository.PutAuthor(author);
-            _authorRepository.Save();
         }
 
         // POST: api/Authors
         public void PostAuthor(Author author)
         {
             _authorRepository.PostAuthor(author);
-            _authorRepository.Save();
         }
 
         // DELETE: api/Authors/5
         public void DeleteAuthor(Author author)
         {
             _authorRepository.DeleteAuthor(author);
-            _authorRepository.Save();
-        }
-
-        // Save Change:
-        public void Save()
-        {
-            _authorRepository.Save();
         }
 
         // Check Author Exists:

@@ -20,8 +20,7 @@ namespace blog_api_y_nguyen.Repository
         // Check whether Authors is null or not:
         public bool CheckAuthorsExist()
         {
-            if (_context.Authors == null) return false;
-            return true;
+            return !(_context.Authors == null);
         }
 
         // GET all Author:
@@ -33,30 +32,30 @@ namespace blog_api_y_nguyen.Repository
         // GET an Author by Id:
         public Author GetAuthor(int id)
         {
-            return _context.Authors.Find(id);
+            var author = _context.Authors.Find(id);
+            //_context.Entry(author).State = EntityState.Detached;
+            //return _context.Authors.Where(a => a.AuthorId == id).AsNoTracking();
+            return author;
         }
 
         // PUT an Author:
         public void PutAuthor(Author author)
         {
              _context.Authors.Update(author);
+            _context.SaveChanges();
         }
 
         // POST an Author:
         public void PostAuthor(Author author)
         {
             _context.Authors.Add(author);
+            _context.SaveChanges();
         }
 
         // DELETE an Author:
         public void DeleteAuthor(Author author)
         {
             _context.Authors.Remove(author);
-        }
-
-        // Save Change:
-        public void Save()
-        {
             _context.SaveChanges();
         }
 

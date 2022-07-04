@@ -59,23 +59,15 @@ namespace blog_api_y_nguyen.Controllers
             {
                return BadRequest();
             }
-            _authorService.PutAuthor(author);
-            try
+            if (!_authorService.AuthorExists(id))
             {
-                _authorService.Save();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!_authorService.AuthorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _authorService.PutAuthor(author);
+                return Ok();
             }
-            return Ok();
         }
 
         // POST: api/Authors
@@ -87,7 +79,6 @@ namespace blog_api_y_nguyen.Controllers
                 return Problem("Entity set 'BlogContext.Authors'  is null.");
             }
             _authorService.PostAuthor(author);
-            _authorService.Save();
             return CreatedAtAction(nameof(GetAuthor), new { id = author.AuthorId }, author);
         }
 
@@ -99,13 +90,12 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return NotFound();
             }
-            var authorDel = _authorService.GetAuthor(id);
-            if (authorDel == null)
+            var AuthorToBeDeleted = _authorService.GetAuthor(id);
+            if (AuthorToBeDeleted == null)
             {
                 return NotFound();
             }
-            _authorService.DeleteAuthor(authorDel);
-            _authorService.Save();
+            _authorService.DeleteAuthor(AuthorToBeDeleted);
             return Ok();
         }
     }

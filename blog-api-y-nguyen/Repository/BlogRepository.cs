@@ -21,8 +21,7 @@ namespace blog_api_y_nguyen.Repository
         // Check whether Blogs is null or not:
         public bool CheckBlogsExist()
         {
-            if (_context.Blogs == null) return false;
-            return true;
+            return !(_context.Blogs == null);
         }
 
         // GET all Blogs: 

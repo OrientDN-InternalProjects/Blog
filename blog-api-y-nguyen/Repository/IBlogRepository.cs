@@ -11,7 +11,6 @@ namespace blog_api_y_nguyen.Repository
         void PutBlog(Blog blog);
         void PostBlog(Blog blog);
         void DeleteBlog(Blog blog);
-        void Save();
         bool BlogExists(int id);
 
     }

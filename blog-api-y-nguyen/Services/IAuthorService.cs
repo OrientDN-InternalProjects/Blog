@@ -11,7 +11,6 @@ namespace blog_api_y_nguyen.Services
         void PutAuthor(Author author);
         void PostAuthor(Author author);
         void DeleteAuthor(Author author);
-        void Save();
         bool AuthorExists(int id);
     }
 }

@@ -20,8 +20,7 @@ namespace blog_api_y_nguyen.Repository
         // Check whether Posts is null or not:
         public bool CheckPostsExist()
         {
-            if (_context.Posts == null) return false;
-            return true;
+            return !(_context.Posts == null);
         }
 
         // GET all Posts:
@@ -40,21 +39,20 @@ namespace blog_api_y_nguyen.Repository
         public void PutPost(Post post)
         {
             _context.Posts.Update(post);
+            _context.SaveChanges();
         }
 
         // POST a Post:
         public void PostPost(Post post)
         {
             _context.Posts.Add(post);
+            _context.SaveChanges();
         }
 
         // DELETE a Post:
         public void DeletePost(Post post)
         {
             _context.Posts.Remove(post);
-        }
-        public void Save()
-        {
             _context.SaveChanges();
         }
 

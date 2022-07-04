@@ -33,27 +33,18 @@ namespace blog_api_y_nguyen.Services
         public void PutBlog(Blog blog)
         {
             _blogRepository.PutBlog(blog);
-            _blogRepository.Save();
         }
 
         // POST: api/Blogs
         public void PostBlog(Blog blog)
         {
             _blogRepository.PostBlog(blog);
-            _blogRepository.Save();
         }
 
         // DELETE: api/Blogs/5
         public void DeleteBlog(Blog blog)
         {
             _blogRepository.DeleteBlog(blog);
-            _blogRepository.Save();
-        }
-
-        // Save Change:
-        public void Save()
-        {
-            _blogRepository.Save();
         }
 
         // Check Blog Exists:

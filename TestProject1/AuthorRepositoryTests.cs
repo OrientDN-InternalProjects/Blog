@@ -14,14 +14,18 @@ namespace TestProject1
     public class AuthorRepositoryTests
     {
         private DbContextOptions<BlogContext> dbContextOptions;
+        private readonly AuthorRepository _authorRepository;
         public AuthorRepositoryTests()
         {
             var dbName = $"AuthorPostsDb_{DateTime.Now.ToFileTimeUtc()}";
             dbContextOptions = new DbContextOptionsBuilder<BlogContext>()
                 .UseInMemoryDatabase(dbName)
                 .Options;
+            //BlogContext context = new BlogContext(dbContextOptions);
+            //PopulateDataAsync(context);
+            //_authorRepository = new AuthorRepository(context);
         }
-
+ 
         [Fact]
         public void GetAllAuthors_Success_Test()
         {
@@ -29,14 +33,6 @@ namespace TestProject1
 
             // Act
             var authorList = repository.GetAllAuthors();
-            //var list = authorList as IEnumerable<Author>();
-            //var listt = (ActionResult)result.Result
-
-            //var model = authorList.Model;
-            //var list = model as List<int>();
-            //var count = list.Count;
-
-            // Assert
             Assert.Equal(3, authorList.Count());
         }
 
@@ -60,14 +56,16 @@ namespace TestProject1
             // Act
             var author = new Author()
             {
-                AuthorId = 7,
+                AuthorId = 4,
                 Name = "Peter Taylor",
                 Age = 33
             };
             repository.PostAuthor(author);
-
+            
             // Assert
-            Assert.Equal("Peter Taylor", repository.GetAuthor(7).Name);
+            var authorList = repository.GetAllAuthors();
+            Assert.Equal(4, authorList.Count());
+            Assert.True(authorList.Contains(author));
         }
 
         [Fact]
@@ -76,11 +74,13 @@ namespace TestProject1
             var repository = CreateRepository();
 
             // Act
-            var author = repository.GetAuthor(2);
+            var author = repository.GetAuthor(3);
             repository.DeleteAuthor(author);
 
             // Assert 
-            Assert.Equal(null, author);
+            var authorList = repository.GetAllAuthors();
+            Assert.Equal(2, authorList.Count());
+            Assert.True(!authorList.Contains(author));
         }
 
         [Fact]

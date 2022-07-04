@@ -64,23 +64,15 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return BadRequest();
             }
-            _blogService.PutBlog(blog);
-            try
+            if (!_blogService.BlogExists(id))
             {
-                _blogService.Save();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!_blogService.BlogExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _blogService.PutBlog(blog);
+                return Ok();
             }
-            return Ok();
         }
 
         // POST: api/Blogs
@@ -92,7 +84,6 @@ namespace blog_api_y_nguyen.Controllers
                 return Problem("Entity set 'BlogContext.Blogs'  is null.");
             }
             _blogService.PostBlog(blog);
-            _blogService.Save();
             return CreatedAtAction(nameof(GetBlog), new { id = blog.BlogId }, blog);
         }
 
@@ -104,13 +95,12 @@ namespace blog_api_y_nguyen.Controllers
             {
                 return NotFound();
             }
-            var blogDel = _blogService.GetBlog(id);
-            if (blogDel == null)
+            var BlogToBeDeleted = _blogService.GetBlog(id);
+            if (BlogToBeDeleted == null)
             {
                 return NotFound();
             }
-            _blogService.DeleteBlog(blogDel);
-            _blogService.Save();
+            _blogService.DeleteBlog(BlogToBeDeleted);
             return Ok();
         }
     }

@@ -33,27 +33,18 @@ namespace blog_api_y_nguyen.Services
         public void PutPost(Post post)
         {
             _postRepository.PutPost(post);
-            _postRepository.Save();
         }
 
         // POST: api/Posts
         public void PostPost(Post post)
         {
             _postRepository.PostPost(post);
-            _postRepository.Save();
         }
 
         // DELETE: api/Posts/5
         public void DeletePost(Post post)
         {
             _postRepository.DeletePost(post);
-            _postRepository.Save();
-        }
-
-        // Save Change:
-        public void Save()
-        {
-            _postRepository.Save();
         }
 
         // Check Post Exists:
