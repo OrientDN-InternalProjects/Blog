@@ -121,7 +121,6 @@ namespace TestProject1
                 index++;
                 await context.Authors.AddAsync(author);
             }
-
             await context.SaveChangesAsync();
         }
     }
