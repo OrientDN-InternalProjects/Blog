@@ -17,10 +17,8 @@ namespace blog_api_y_nguyen.Controllers
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorService _authorService;
-        private readonly IMapper _autoMapper;
-        public AuthorsController(IMapper autoMapper, IAuthorService authorService)
+        public AuthorsController(IAuthorService authorService)
         {
-            _autoMapper = autoMapper;
             _authorService = authorService;
         }
 
@@ -28,7 +26,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Author>> GetAllAuthors()
         {
-            if (_authorService.CheckAuthorsExist() == false)
+            if (!_authorService.CheckAuthorsExist())
             {
                 return NotFound();
             }
@@ -39,7 +37,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Author> GetAuthor(int id)
         {
-            if (_authorService.CheckAuthorsExist() == false)
+            if (!_authorService.CheckAuthorsExist())
             {
                 return NotFound();
             }
@@ -59,35 +57,26 @@ namespace blog_api_y_nguyen.Controllers
             {
                return BadRequest();
             }
-            _authorService.PutAuthor(author);
-            try
+            if (!_authorService.AuthorExists(id))
             {
-                _authorService.Save();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!_authorService.AuthorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _authorService.PutAuthor(author);
+                return Ok();
             }
-            return Ok();
         }
 
         // POST: api/Authors
         [HttpPost]
         public ActionResult<Author> PostAuthor(Author author)
         {
-            if (_authorService.CheckAuthorsExist() == false)
+            if (!_authorService.CheckAuthorsExist())
             {
                 return Problem("Entity set 'BlogContext.Authors'  is null.");
             }
             _authorService.PostAuthor(author);
-            _authorService.Save();
             return CreatedAtAction(nameof(GetAuthor), new { id = author.AuthorId }, author);
         }
 
@@ -95,17 +84,16 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteAuthor(int id)
         {
-            if (_authorService.CheckAuthorsExist() == false)
+            if (!_authorService.CheckAuthorsExist())
             {
                 return NotFound();
             }
-            var authorDel = _authorService.GetAuthor(id);
-            if (authorDel == null)
+            var AuthorToBeDeleted = _authorService.GetAuthor(id);
+            if (AuthorToBeDeleted == null)
             {
                 return NotFound();
             }
-            _authorService.DeleteAuthor(authorDel);
-            _authorService.Save();
+            _authorService.DeleteAuthor(AuthorToBeDeleted);
             return Ok();
         }
     }

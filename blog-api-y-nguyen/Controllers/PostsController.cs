@@ -17,11 +17,8 @@ namespace blog_api_y_nguyen.Controllers
     public class PostsController : Controller
     {
         private readonly IPostService _postService;
-        private readonly IMapper _autoMapper;
-
-        public PostsController(IMapper autoMapper, IPostService postService)
+        public PostsController(IPostService postService)
         {
-            _autoMapper = autoMapper;
             _postService = postService;
         }
 
@@ -29,7 +26,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Post>> GetAllPosts()
         {
-            if (_postService.CheckPostsExist() == false)
+            if (!_postService.CheckPostsExist())
             {
                 return NotFound();
             }
@@ -40,7 +37,7 @@ namespace blog_api_y_nguyen.Controllers
         [HttpGet("{id}")]
         public ActionResult<Post> GetPost(int id)
         {
-            if (_postService.CheckPostsExist() == false)
+            if (!_postService.CheckPostsExist())
             {
                 return NotFound();
             }
@@ -56,39 +53,30 @@ namespace blog_api_y_nguyen.Controllers
         [HttpPut("{id}")]
         public IActionResult PutPost(int id, Post post)
         {
-            if (id != post.PostId)
+            if (id != post.BlogId)
             {
                 return BadRequest();
             }
-            _postService.PutPost(post);
-            try
+            if (!_postService.PostExists(id))
             {
-                _postService.Save();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!_postService.PostExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _postService.PutPost(post);
+                return Ok();
             }
-            return Ok();
         }
 
         // POST: api/Posts
         [HttpPost]
         public ActionResult<Post> PostPost(Post post)
         {
-            if (_postService.CheckPostsExist() == false)
+            if (!_postService.CheckPostsExist())
             {
                 return Problem("Entity set 'PostContext.Posts'  is null.");
             }
             _postService.PostPost(post);
-            _postService.Save();
             return CreatedAtAction(nameof(GetPost), new { id = post.PostId }, post);
         }
 
@@ -96,17 +84,16 @@ namespace blog_api_y_nguyen.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeletePost(int id)
         {
-            if (_postService.CheckPostsExist() == false)
+            if (!_postService.CheckPostsExist())
             {
                 return NotFound();
             }
-            var postDel = _postService.GetPost(id);
-            if (postDel == null)
+            var PostToBeDeleted = _postService.GetPost(id);
+            if (PostToBeDeleted == null)
             {
                 return NotFound();
             }
-            _postService.DeletePost(postDel);
-            _postService.Save();
+            _postService.DeletePost(PostToBeDeleted);
             return Ok();
         }
     }

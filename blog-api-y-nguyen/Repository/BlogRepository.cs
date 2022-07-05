@@ -21,12 +21,11 @@ namespace blog_api_y_nguyen.Repository
         // Check whether Blogs is null or not:
         public bool CheckBlogsExist()
         {
-            if (_context.Blogs == null) return false;
-            return true;
+            return !(_context.Blogs == null);
         }
 
         // GET all Blogs: 
-        public ActionResult<IEnumerable<Blog>> GetAllBlogs()
+        public IEnumerable<Blog> GetAllBlogs()
         {
             return _context.Blogs.ToList();
         }
@@ -38,25 +37,31 @@ namespace blog_api_y_nguyen.Repository
         }
 
         // PUT a Blog
-        public void PutBlog(Blog blog)
+        public Blog PutBlog(Blog blog)
         {
-            _context.Blogs.Update(blog);
+            var blogToBeUpdated = _context.Blogs.Find(blog.BlogId);
+            blogToBeUpdated.BlogId = blog.BlogId;
+            blogToBeUpdated.Name = blog.Name;
+            blogToBeUpdated.Url = blog.Url;
+            //_context.Blogs.Update(blog);
+            _context.SaveChanges();
+            return blogToBeUpdated;
         }
 
         // POST a Blog:
-        public void PostBlog(Blog blog)
+        public Blog PostBlog(Blog blog)
         {
             _context.Blogs.Add(blog);
+            _context.SaveChanges();
+            return blog;
         }
 
         // DELETE a Blog:
-        public void DeleteBlog(Blog blog)
+        public Blog DeleteBlog(Blog blog)
         {
             _context.Blogs.Remove(blog);
-        }
-        public void Save()
-        {
             _context.SaveChanges();
+            return blog;
         }
 
         // Check Blog Exists:

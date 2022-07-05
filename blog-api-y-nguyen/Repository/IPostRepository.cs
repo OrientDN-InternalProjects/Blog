@@ -6,12 +6,11 @@ namespace blog_api_y_nguyen.Repository
     public interface IPostRepository
     {
         bool CheckPostsExist();
-        ActionResult<IEnumerable<Post>> GetAllPosts();
+        IEnumerable<Post> GetAllPosts();
         Post GetPost(int id);
-        void PutPost(Post post);
-        void PostPost(Post post);
-        void DeletePost(Post post);
-        void Save();
+        Post PutPost(Post post);
+        Post PostPost(Post post);
+        Post DeletePost(Post post);
         bool PostExists(int id);
 
     }

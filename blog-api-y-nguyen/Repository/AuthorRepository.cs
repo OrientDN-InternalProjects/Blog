@@ -20,12 +20,11 @@ namespace blog_api_y_nguyen.Repository
         // Check whether Authors is null or not:
         public bool CheckAuthorsExist()
         {
-            if (_context.Authors == null) return false;
-            return true;
+            return !(_context.Authors == null);
         }
 
         // GET all Author:
-        public ActionResult<IEnumerable<Author>> GetAllAuthors()
+        public IEnumerable<Author> GetAllAuthors()
         {
             return _context.Authors.ToList();
         }
@@ -33,31 +32,43 @@ namespace blog_api_y_nguyen.Repository
         // GET an Author by Id:
         public Author GetAuthor(int id)
         {
-            return _context.Authors.Find(id);
+            var author = _context.Authors.Single(a => a.AuthorId == id);
+            //_context.Entry(author).State = EntityState.Detached;
+            //return _context.Authors.Where(a => a.AuthorId == id).AsNoTracking();
+            return author;
         }
 
         // PUT an Author:
-        public void PutAuthor(Author author)
+        public Author PutAuthor(Author author)
         {
-             _context.Authors.Update(author);
+            var authorToBeUpdated = _context.Authors.Find(author.AuthorId);
+            authorToBeUpdated.AuthorId = author.AuthorId;
+            authorToBeUpdated.Name = author.Name;
+            authorToBeUpdated.Age = author.Age;
+            authorToBeUpdated.Posts = author.Posts;
+            //var entry = _context.Entry(author);
+            //entry.State = EntityState.Modified;
+            //_context.SaveChanges();
+            //authorToBeUpdated = author;
+            //_context.Authors.Update(author);
+            _context.SaveChanges();
+            return authorToBeUpdated;
         }
 
         // POST an Author:
-        public void PostAuthor(Author author)
+        public Author PostAuthor(Author author)
         {
             _context.Authors.Add(author);
+            _context.SaveChanges();
+            return author;
         }
 
         // DELETE an Author:
-        public void DeleteAuthor(Author author)
+        public Author DeleteAuthor(Author author)
         {
             _context.Authors.Remove(author);
-        }
-
-        // Save Change:
-        public void Save()
-        {
             _context.SaveChanges();
+            return author;
         }
 
         // Check Author Exists:

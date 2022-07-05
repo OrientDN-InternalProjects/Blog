@@ -6,12 +6,11 @@ namespace blog_api_y_nguyen.Repository
     public interface IBlogRepository
     {
         bool CheckBlogsExist();
-        ActionResult<IEnumerable<Blog>> GetAllBlogs();
+        IEnumerable<Blog> GetAllBlogs();
         Blog GetBlog(int id);
-        void PutBlog(Blog blog);
-        void PostBlog(Blog blog);
-        void DeleteBlog(Blog blog);
-        void Save();
+        Blog PutBlog(Blog blog);
+        Blog PostBlog(Blog blog);
+        Blog DeleteBlog(Blog blog);
         bool BlogExists(int id);
 
     }

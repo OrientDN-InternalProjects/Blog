@@ -20,12 +20,11 @@ namespace blog_api_y_nguyen.Repository
         // Check whether Posts is null or not:
         public bool CheckPostsExist()
         {
-            if (_context.Posts == null) return false;
-            return true;
+            return !(_context.Posts == null);
         }
 
         // GET all Posts:
-        public ActionResult<IEnumerable<Post>> GetAllPosts()
+        public IEnumerable<Post> GetAllPosts()
         {
             return _context.Posts.ToList();
         }
@@ -37,25 +36,35 @@ namespace blog_api_y_nguyen.Repository
         }
 
         // PUT a Post
-        public void PutPost(Post post)
+        public Post PutPost(Post post)
         {
-            _context.Posts.Update(post);
+            var postToBeUpdated = _context.Posts.Find(post.PostId);
+            postToBeUpdated.PostId = post.PostId;
+            postToBeUpdated.Title = post.Title;
+            postToBeUpdated.Content = post.Content;
+            postToBeUpdated.AuthorId = post.AuthorId;
+            postToBeUpdated.BlogId = post.BlogId;
+            postToBeUpdated.Author = post.Author;
+            postToBeUpdated.Blog = post.Blog;
+            //_context.Posts.Update(post);
+            _context.SaveChanges();
+            return postToBeUpdated;
         }
 
         // POST a Post:
-        public void PostPost(Post post)
+        public Post PostPost(Post post)
         {
             _context.Posts.Add(post);
+            _context.SaveChanges();
+            return post;
         }
 
         // DELETE a Post:
-        public void DeletePost(Post post)
+        public Post DeletePost(Post post)
         {
             _context.Posts.Remove(post);
-        }
-        public void Save()
-        {
             _context.SaveChanges();
+            return post;
         }
 
         // Check Post Exists:

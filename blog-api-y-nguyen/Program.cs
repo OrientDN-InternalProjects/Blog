@@ -30,8 +30,6 @@ builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<IPostService, PostService>();
-builder.Services.AddAutoMapper(typeof(Program));
-
 
 var app = builder.Build();
 

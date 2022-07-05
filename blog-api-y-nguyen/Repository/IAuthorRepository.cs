@@ -6,12 +6,11 @@ namespace blog_api_y_nguyen.Repository
     public interface IAuthorRepository
     {
         bool CheckAuthorsExist();
-        ActionResult<IEnumerable<Author>> GetAllAuthors();
+        IEnumerable<Author> GetAllAuthors();
         Author GetAuthor(int id);
-        void PutAuthor(Author author);
-        void PostAuthor(Author author);
-        void DeleteAuthor(Author author);
-        void Save();
+        Author PutAuthor(Author author);
+        Author PostAuthor(Author author);
+        Author DeleteAuthor(Author author);
         bool AuthorExists(int id);
     }
 }
