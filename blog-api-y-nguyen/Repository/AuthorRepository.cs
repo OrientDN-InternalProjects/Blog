@@ -32,7 +32,7 @@ namespace blog_api_y_nguyen.Repository
         // GET an Author by Id:
         public Author GetAuthor(int id)
         {
-            var author = _context.Authors.Find(id);
+            var author = _context.Authors.Single(a => a.AuthorId == id);
             //_context.Entry(author).State = EntityState.Detached;
             //return _context.Authors.Where(a => a.AuthorId == id).AsNoTracking();
             return author;
@@ -41,12 +41,18 @@ namespace blog_api_y_nguyen.Repository
         // PUT an Author:
         public Author PutAuthor(Author author)
         {
-            var entry = _context.Entry(author);
-            entry.State = EntityState.Modified;
-            _context.SaveChanges();
-            //_context.Authors.Update(author);
+            var authorToBeUpdated = _context.Authors.Find(author.AuthorId);
+            authorToBeUpdated.AuthorId = author.AuthorId;
+            authorToBeUpdated.Name = author.Name;
+            authorToBeUpdated.Age = author.Age;
+            authorToBeUpdated.Posts = author.Posts;
+            //var entry = _context.Entry(author);
+            //entry.State = EntityState.Modified;
             //_context.SaveChanges();
-            return author;
+            //authorToBeUpdated = author;
+            //_context.Authors.Update(author);
+            _context.SaveChanges();
+            return authorToBeUpdated;
         }
 
         // POST an Author:

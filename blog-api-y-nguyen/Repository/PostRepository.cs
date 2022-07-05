@@ -38,9 +38,17 @@ namespace blog_api_y_nguyen.Repository
         // PUT a Post
         public Post PutPost(Post post)
         {
-            _context.Posts.Update(post);
+            var postToBeUpdated = _context.Posts.Find(post.PostId);
+            postToBeUpdated.PostId = post.PostId;
+            postToBeUpdated.Title = post.Title;
+            postToBeUpdated.Content = post.Content;
+            postToBeUpdated.AuthorId = post.AuthorId;
+            postToBeUpdated.BlogId = post.BlogId;
+            postToBeUpdated.Author = post.Author;
+            postToBeUpdated.Blog = post.Blog;
+            //_context.Posts.Update(post);
             _context.SaveChanges();
-            return post;
+            return postToBeUpdated;
         }
 
         // POST a Post:

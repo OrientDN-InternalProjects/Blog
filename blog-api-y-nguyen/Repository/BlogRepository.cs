@@ -39,9 +39,13 @@ namespace blog_api_y_nguyen.Repository
         // PUT a Blog
         public Blog PutBlog(Blog blog)
         {
-            _context.Blogs.Update(blog);
+            var blogToBeUpdated = _context.Blogs.Find(blog.BlogId);
+            blogToBeUpdated.BlogId = blog.BlogId;
+            blogToBeUpdated.Name = blog.Name;
+            blogToBeUpdated.Url = blog.Url;
+            //_context.Blogs.Update(blog);
             _context.SaveChanges();
-            return blog;
+            return blogToBeUpdated;
         }
 
         // POST a Blog:

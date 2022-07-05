@@ -91,13 +91,13 @@ namespace TestProject1
             var editedBlog = new Blog()
             {
                 BlogId = 2,
-                Name = "Blog_2",
+                Name = "Blog_2.2",
                 Url = "2.com"
             };
             repository.PutBlog(editedBlog);
 
             // Assert
-            Assert.Equal("2", repository.GetBlog(2).Name);
+            Assert.Equal("Blog_2.2", repository.GetBlog(2).Name);
         }
 
         public BlogRepository CreateRepository()
